@@ -1,0 +1,116 @@
+using System;
+using System.Threading.Tasks;
+
+namespace AProb
+{
+    public class NewOne
+    {
+        public int[] CardNumbers = new int[] { 1, 2, 3 };
+        public int[] PinNumbers = new[] { 123, 234, 456 };
+        public int[] Balance = new[] { 1500, 200, 800 };
+        public int[] NumberOfTransactions = new[] { 0, 0, 0 };
+        private string CardNumberPrompt = "Please enter Card Number";
+
+
+        public void MainProgam()
+        {
+            var cardNumberIndex = CardChecking(CardNumberPrompt);
+            var isValidPin = CheckPinNumber(cardNumberIndex);
+            if (!isValidPin)
+            {
+                MainProgam();
+            }
+            else
+                Option(cardNumberIndex);
+        }
+
+        public int CardChecking(string procard)
+        {
+            Console.WriteLine("Enter Your Card Number");
+            var card = int.Parse(Console.ReadLine());
+            var cardNumberIndex = Array.IndexOf(CardNumbers, card);
+            if (cardNumberIndex < 0)
+            {
+                Console.WriteLine("\nInvalid card Number, Please Enterr Correct One\n");
+            }
+            return cardNumberIndex;
+            
+        }
+
+        private bool CheckPinNumber(int index)
+        {
+            Console.WriteLine("Enter Your Pin Number");
+            var pinNumber =int.Parse(Console.ReadLine());
+            if (PinNumbers[index].Equals(pinNumber))
+                return true;
+            Console.WriteLine("Invalid Pin Number");
+            return false;
+        }
+
+        public void Option(int cardNumberIndex)
+        {
+            Console.WriteLine("1.To check balance");
+            Console.WriteLine("2.To withdraw money");
+            Console.WriteLine("3.Exit");
+            int ch = int.Parse(Console.ReadLine());
+
+            switch (ch)
+            {
+                case 1:
+                    MainBalance(cardNumberIndex);
+                    break;
+
+                case 2:
+                    if (NumberOfTransactions[cardNumberIndex] == 3)
+                    {
+                        Console.WriteLine("You have reached Daily 3 time Transaction Limit");
+                        Option(cardNumberIndex);
+                    }
+                    else
+                    {
+                        Withdraw(cardNumberIndex);
+                    }
+                break;
+
+                case 3:
+                Console.WriteLine("Your are Now Exit");
+                    MainProgam();
+                    break;
+
+            }
+        }
+        public void MainBalance(int cardNumberIndex)
+        {
+            Console.WriteLine("Your Account Balance Is: {0}", Balance[cardNumberIndex]);
+            Option(cardNumberIndex);
+        }
+
+        public void Withdraw(int cardNumberIndex)
+        {
+            Console.WriteLine("Enter Your Amount");
+            {
+                int amt = int.Parse(Console.ReadLine());
+                if (amt > 1000)
+                {
+                    Console.WriteLine("You have exceeded the maximum one time limit");
+                    Option(cardNumberIndex);
+                }
+                else if (amt < Balance[cardNumberIndex])
+                {
+                    Console.WriteLine("Collect Your Money: " + amt);
+                    var oldBalance = Balance[cardNumberIndex];
+                    Balance[cardNumberIndex] = oldBalance - amt;
+                    Console.WriteLine("Your Current Balance:{0}", Balance[cardNumberIndex]);
+                    NumberOfTransactions[cardNumberIndex]++;
+                    Option(cardNumberIndex);
+                }
+                else
+                {
+                    Console.WriteLine("Your Account have not Sufficent Balance");
+                    Option(cardNumberIndex);
+                }
+            }
+        }
+        
+    }
+}
