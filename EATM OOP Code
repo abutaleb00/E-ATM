@@ -1,0 +1,95 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Dynamic;
+
+namespace AProb
+{
+    public class EAtmOop
+    {
+        List<Accounts> account = new List<Accounts>();
+
+        public void DefaultValue()
+        {
+            account.Add(new Accounts() {CardNumbers = 1, PinNumbers = 123, Balances = 1000});
+            account.Add(new Accounts(){CardNumbers = 2, PinNumbers = 234, Balances = 500});
+            account.Add(new Accounts(){CardNumbers = 2, PinNumbers = 345, Balances = 1200});
+        }
+
+        public void MainProgram()
+        {
+            CardNumberChecking();
+        }
+
+        public void CardNumberChecking()
+        {
+            DefaultValue();
+            Console.WriteLine("Enter Your Card Number");
+            var card = int.Parse(Console.ReadLine());
+           for(int i=0; i<account.Count;i++)
+            {
+                if (card == account[i].CardNumbers)
+                {
+                    PinChecking(account[i]);
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Enter Correct Card Number");
+                }
+            }
+            MainProgram();
+            
+        }
+
+        public void PinChecking(Accounts n)
+        {
+            DefaultValue();
+            Console.WriteLine("Enter your pin number:");
+            var y = int.Parse(Console.ReadLine());
+            if (y == n.PinNumbers)
+            {
+                Option();
+
+            }
+            else
+            {
+                Console.WriteLine("Incorrect pin number");
+                MainProgram();
+            }
+            
+        }
+
+        public int Option()
+        {
+            Console.WriteLine("1.To check balance");
+            Console.WriteLine("2.To withdraw money");
+            Console.WriteLine("3.Exit");
+            int ch = int.Parse(Console.ReadLine());
+
+            switch (ch)
+            {
+                case 1:
+                    MainBalance();
+                    break;
+
+                case 2:
+                    
+                        Console.WriteLine("You have reached your daily limit of 3 transactions");
+                        CardNumberChecking();
+                    break;
+                case 3:
+                    Console.WriteLine("Your are Now Exit");
+                    CardNumberChecking();
+                    break;
+
+            }
+            return 0;
+        }
+        public int MainBalance()
+        {
+            Console.WriteLine("1. Your Account Balance Is: {0}");
+            return Option();
+        }
+     }
+}
