@@ -1,95 +1,143 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Dynamic;
 
-namespace AProb
+namespace OOP
 {
     public class EAtmOop
     {
-        List<Accounts> account = new List<Accounts>();
+        List<Account> _accounts = new List<Account>();
+        IDictionary<int, int> Withdrawlimit = new Dictionary<int, int>();
 
         public void DefaultValue()
         {
-            account.Add(new Accounts() {CardNumbers = 1, PinNumbers = 123, Balances = 1000});
-            account.Add(new Accounts(){CardNumbers = 2, PinNumbers = 234, Balances = 500});
-            account.Add(new Accounts(){CardNumbers = 2, PinNumbers = 345, Balances = 1200});
+            _accounts = new List<Account>();
+            _accounts.Add(new Account() { CardNumber = 1, PinNumber = 123, Balence = 1500 });
+            _accounts.Add(new Account() { CardNumber = 2, PinNumber = 234, Balence = 1200 });
+            _accounts.Add(new Account() { CardNumber = 3, PinNumber = 456, Balence = 800 });
         }
 
-        public void MainProgram()
-        {
-            CardNumberChecking();
-        }
-
-        public void CardNumberChecking()
+        public void IniWithdrawLimit()
         {
             DefaultValue();
-            Console.WriteLine("Enter Your Card Number");
-            var card = int.Parse(Console.ReadLine());
-           for(int i=0; i<account.Count;i++)
+            for (int i = 0; i < _accounts.Count; i++)
             {
-                if (card == account[i].CardNumbers)
+                Withdrawlimit.Add(_accounts[i].CardNumber, 1);
+            }
+        }
+
+        public void Start()
+        {
+            CardChecking();
+
+        }
+
+        public void CardChecking()
+        {
+            DefaultValue();
+            Console.Write("Enter Your Card Number: ");
+            var card = int.Parse(Console.ReadLine());
+            for (int i = 0; i < _accounts.Count; i++)
+            {
+                if (card == _accounts[i].CardNumber)
                 {
-                    PinChecking(account[i]);
+                    PinChecking(_accounts[i]);
                     break;
                 }
                 else
                 {
-                    Console.WriteLine("Enter Correct Card Number");
+                    continue;
                 }
             }
-            MainProgram();
-            
+            Console.WriteLine("Invalid Account Number.");
+            Start();
         }
 
-        public void PinChecking(Accounts n)
+        public void PinChecking(Account n)
         {
-            DefaultValue();
-            Console.WriteLine("Enter your pin number:");
-            var y = int.Parse(Console.ReadLine());
-            if (y == n.PinNumbers)
+            Console.Write("Enter Pin Number: ");
+            var pinNo = int.Parse(Console.ReadLine());
+            if (pinNo == n.PinNumber)
             {
-                Option();
-
+                Option(n);
             }
             else
             {
-                Console.WriteLine("Incorrect pin number");
-                MainProgram();
+                Console.WriteLine("Incorrect PinNumber");
+                Console.WriteLine("Please Try Again.");
+                Start();
             }
-            
         }
 
-        public int Option()
+        public void Option(Account n)
         {
-            Console.WriteLine("1.To check balance");
-            Console.WriteLine("2.To withdraw money");
+            Console.WriteLine("\n- - - - - - - - - - - - - - -");
+            Console.WriteLine("1.To Check Balance");
+            Console.WriteLine("2.To Withdraw Money");
             Console.WriteLine("3.Exit");
+            Console.WriteLine("- - - - - - - - - - - - - - -");
             int ch = int.Parse(Console.ReadLine());
 
             switch (ch)
             {
                 case 1:
-                    MainBalance();
+                    BalanceCheck(n);
                     break;
 
                 case 2:
-                    
-                        Console.WriteLine("You have reached your daily limit of 3 transactions");
-                        CardNumberChecking();
-                    break;
-                case 3:
-                    Console.WriteLine("Your are Now Exit");
-                    CardNumberChecking();
+                    if (Withdrawlimit[n.CardNumber] >= 1 && Withdrawlimit[n.CardNumber] <= 3)
+                    {
+                        Withdrawlimit[n.CardNumber] = Withdrawlimit[n.CardNumber] + 1;
+                        Withdraw(n);
+                    }
+                    else
+                    {
+                        Console.WriteLine("You have reached Daily 3 time Transaction Limit");
+                        Option(n);
+                    }
                     break;
 
+                case 3:
+                    Console.WriteLine("Your are Now Exit");
+                    Start();
+                    break;
             }
-            return 0;
         }
-        public int MainBalance()
+
+        public void BalanceCheck(Account n)
         {
-            Console.WriteLine("1. Your Account Balance Is: {0}");
-            return Option();
+            Console.WriteLine("Your Account Balance: " + n.Balence);
+            Option(n);
         }
-     }
+
+        public void Withdraw(Account n)
+        {
+            Console.Write("Enter Withdrawal Ammount: ");
+            var amt = int.Parse(Console.ReadLine());
+            if (amt < 1000)
+            {
+
+                if (amt < n.Balence)
+                {
+                    var oldBalance = n.Balence;
+                    n.Balence = oldBalance - amt;
+                    Console.WriteLine("\nWithderawal Successfully!\n");
+                    Console.WriteLine("Your Current Balance is: {0}", n.Balence);
+                    Option(n); 
+                }
+                else
+                {
+                    Console.WriteLine("Your Account have not Sufficent Balance");
+                    Option(n);  
+                }
+            }
+            
+            else
+            {
+                Console.WriteLine("You have exceeded the maximum one time limit");
+                Option(n);
+            }
+          }
+            
+
+    }
 }
