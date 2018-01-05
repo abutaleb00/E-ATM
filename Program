@@ -1,0 +1,28 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using E_Atm;
+
+namespace OOP
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            /*
+            EATM Pstart = new EATM();
+            Pstart.initwithdrawlimit();
+            Pstart.start();
+            Console.ReadKey();
+             */
+
+            var acc = new EAtmOop();
+            acc.DefaultValue();
+            acc.IniWithdrawLimit();
+            acc.Start();
+        }
+    }
+}
