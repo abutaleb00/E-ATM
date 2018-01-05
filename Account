@@ -1,0 +1,9 @@
+namespace OOP
+{
+    public class Account
+    {
+        public int CardNumber;
+        public int PinNumber;
+        public int Balence;
+    }
+}
