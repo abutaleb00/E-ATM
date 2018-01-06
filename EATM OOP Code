@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OOP
+namespace EATM
 {
     public class EAtmOop
     {
@@ -18,7 +18,6 @@ namespace OOP
 
         public void IniWithdrawLimit()
         {
-            DefaultValue();
             for (int i = 0; i < _accounts.Count; i++)
             {
                 Withdrawlimit.Add(_accounts[i].CardNumber, 1);
@@ -33,7 +32,6 @@ namespace OOP
 
         public void CardChecking()
         {
-            DefaultValue();
             Console.Write("Enter Your Card Number: ");
             var card = int.Parse(Console.ReadLine());
             for (int i = 0; i < _accounts.Count; i++)
@@ -71,9 +69,9 @@ namespace OOP
         public void Option(Account n)
         {
             Console.WriteLine("\n- - - - - - - - - - - - - - -");
-            Console.WriteLine("1.To Check Balance");
-            Console.WriteLine("2.To Withdraw Money");
-            Console.WriteLine("3.Exit");
+            Console.WriteLine("1. To Check Balance");
+            Console.WriteLine("2. To Withdraw Money");
+            Console.WriteLine("3. Exit");
             Console.WriteLine("- - - - - - - - - - - - - - -");
             int ch = int.Parse(Console.ReadLine());
 
@@ -122,22 +120,22 @@ namespace OOP
                     n.Balence = oldBalance - amt;
                     Console.WriteLine("\nWithderawal Successfully!\n");
                     Console.WriteLine("Your Current Balance is: {0}", n.Balence);
-                    Option(n); 
+                    Option(n);
                 }
                 else
                 {
                     Console.WriteLine("Your Account have not Sufficent Balance");
-                    Option(n);  
+                    Option(n);
                 }
             }
-            
+
             else
             {
                 Console.WriteLine("You have exceeded the maximum one time limit");
                 Option(n);
             }
-          }
-            
+        }
+
 
     }
 }
